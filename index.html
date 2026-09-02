@@ -1,3 +1,12 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b0720">
+<title>BAR doors — 扉の向こうは、昭和平成。</title>
+</head>
+<body>
 <title>BAR doors — 扉の向こうは、昭和平成。</title>
 <meta name="description" content="小田原・浦町の隠れ家 BAR doors。ファミコン・カラオケ・昭和平成レトロ。扉を開けて入店。">
 
@@ -21,12 +30,15 @@
     mix-blend-mode:multiply; opacity:.45}
   .wrap{max-width:1120px; margin:0 auto; padding:0 24px; position:relative; z-index:2}
 
-  /* ===== A案: 扉を開けて入る（変更なし） ===== */
-  .enter{position:fixed; inset:0; z-index:100; background:var(--void); display:flex;
-    align-items:center; justify-content:center; overflow:hidden; transition:opacity .7s ease, visibility .7s}
+  /* ===== A案: 扉を開けて入る ===== */
+  .enter{position:fixed; inset:0; z-index:100; background:var(--void); overflow:hidden;
+    transition:opacity .7s ease, visibility .7s}
   .enter.gone{opacity:0; visibility:hidden}
   .enter canvas{position:absolute; inset:0; width:100%; height:100%; display:block}
-  .enter .ui{position:relative; z-index:2; text-align:center; pointer-events:none; padding:24px}
+  .enter .ui{position:absolute; inset:0; z-index:2; text-align:center; pointer-events:none;
+    display:flex; flex-direction:column; justify-content:space-between; align-items:center;
+    padding:calc(env(safe-area-inset-top) + 5vh) 20px calc(env(safe-area-inset-bottom) + 4vh)}
+  .enter .ui-top,.enter .ui-bot{display:flex; flex-direction:column; align-items:center}
   .enter .brand{font-family:var(--disp); font-style:italic; text-transform:lowercase; letter-spacing:-.02em;
     font-size:clamp(3rem,13vw,8rem); line-height:.9; margin:0; color:#fff;
     -webkit-text-stroke:3px var(--void); paint-order:stroke fill;
@@ -175,6 +187,55 @@
     color:var(--muted); letter-spacing:.1em; position:relative; z-index:2}
   a{color:var(--cyan)}
   :focus-visible{outline:3px solid var(--lime); outline-offset:3px}
+  /* ===== モバイル最適化 ===== */
+  @media(max-width:680px){
+    html{-webkit-text-size-adjust:100%}
+    .wrap{padding:0 18px}
+    .top{padding-top:env(safe-area-inset-top)}
+    .top .in{padding:10px 18px}
+    .top .logo{font-size:1.35rem}
+    .top .loc{font-size:.66rem}
+
+    .hero{padding:13vh 0 9vh}
+    .hero .tag b{font-size:1.5rem}
+    .hero .chips{gap:9px}
+    .hero .chips span{font-size:.84rem; padding:8px 12px}
+
+    .concept{padding:76px 0}
+    .concept p{font-size:1.18rem; max-width:24ch}
+
+    .play,.access{padding:68px 0 78px}
+    .space{padding:68px 0 86px}
+    .headline{margin-bottom:34px}
+
+    .tiles{gap:44px; flex-direction:column; align-items:stretch}
+    .tile{max-width:100%; box-shadow:6px 7px 0 rgba(0,0,0,.45)}
+    .tile:nth-child(1){transform:rotate(-1.4deg)}
+    .tile:nth-child(2){transform:rotate(1.4deg)}
+    .tile:nth-child(3){transform:rotate(-1deg)}
+    .tile canvas{height:180px}
+    .tile .big{font-size:1.75rem}
+    .tile p{font-size:1.02rem}
+
+    .polas{gap:38px 16px}
+    .pola{padding:9px 9px 32px}
+    .pola canvas{width:41vw; height:31vw; max-width:220px; max-height:166px}
+    .pola .cap{font-size:.72rem}
+    .space .note{font-size:.84rem}
+
+    .accgrid{flex-direction:column}
+    .mapbox{transform:rotate(-0.5deg); min-height:240px}
+    .facts{transform:none}
+    .fact{padding:16px 18px}
+    .fact .k{font-size:.72rem}
+    .fact .v{font-size:1.45rem}
+    .fact .v small{font-size:.88rem}
+
+    .sticker{font-size:.74rem}
+    .cta{padding:92px 0 104px}
+    .btn{font-size:.88rem; padding:16px 22px}
+    footer{font-size:.72rem}
+  }
   @media(prefers-reduced-motion:reduce){.top .coin,.enterBtn{animation:none}}
 </style>
 
@@ -192,10 +253,14 @@
 <div class="enter" id="enter">
   <canvas id="enterCanvas" aria-hidden="true"></canvas>
   <div class="ui">
-    <p class="brand">doors</p>
-    <p class="sub">小田原・浦町 / 昭和平成レトロの隠れ家</p>
-    <button class="enterBtn" id="enterBtn">▶ Push to Enter — 扉を開ける</button>
-    <p class="hint">Insert Coin</p>
+    <div class="ui-top">
+      <p class="brand">doors</p>
+      <p class="sub">小田原・浦町 / 昭和平成レトロの隠れ家</p>
+    </div>
+    <div class="ui-bot">
+      <button class="enterBtn" id="enterBtn">▶ 扉を開ける</button>
+      <p class="hint">Push to Enter · Insert Coin</p>
+    </div>
   </div>
 </div>
 
@@ -221,7 +286,7 @@
       <h1>doors</h1>
       <div class="tag"><b>扉の向こうは、<em>昭和平成</em>。</b></div>
       <div class="chips">
-        <span>浦町の隠れ家</span><span>ファミコンあり</span><span>〜24時 カラオケ</span><span>レトロ収集</span>
+        <span>浦町の隠れ家Bar</span><span>ファミコンあり</span><span>〜24時 カラオケ</span><span>レトロ収集</span>
       </div>
     </div>
   </header>
@@ -231,7 +296,7 @@
     <span class="splat" data-c="#b6ff3a" data-seed="2" style="width:38vw;height:38vw;top:-10vw;right:6vw;opacity:.9"></span>
     <div class="wrap">
       <span class="sticker" style="background:var(--cyan)">01 — 隠れ家</span>
-      <h2 class="chunk">浦町の、<br>隠れ家。</h2>
+      <h2 class="chunk">浦町の、<br>隠れ家Bar。</h2>
       <p>小田原駅からほんの少し。店主の趣味が詰まった、<span class="hl">昭和と平成</span>がまるごと待つ一軒。</p>
     </div>
   </section>
@@ -435,8 +500,10 @@
     for(var vx=-10;vx<=10;vx++){ctx.beginPath(); ctx.moveTo(W/2+vx*20,horizon); ctx.lineTo(W/2+vx*W*0.14,H); ctx.stroke();}
     ctx.restore();
     if(withDoor){
-      var cx=W*0.5, cy=horizon-Math.min(W,H)*0.06, dist=4.2, scale=Math.min(W,H)*0.52;
-      var W2=1.15,H2=1.9,iw=0.85,ih=1.55;
+      var W2=1.15,H2=1.9,iw=0.85,ih=1.55, dist=4.2;
+      var cx=W*0.5, cy=H*0.5;
+      // 画面いっぱい（幅ギリギリ）まで扉を拡大。幅・高さの小さい方に合わせる
+      var scale=Math.min(0.94*W*dist/(2*W2), 0.9*H*dist/(2*H2));
       var o=[[-W2,-H2,0],[W2,-H2,0],[W2,H2,0],[-W2,H2,0]], i=[[-iw,-ih,0],[iw,-ih,0],[iw,ih,0],[-iw,ih,0]], fe=[];
       for(var k=0;k<4;k++){fe.push([o[k],o[(k+1)%4]]); fe.push([i[k],i[(k+1)%4]]); fe.push([o[k],i[k]]);}
       var oc=rotX(rotY([0,0,-0.2],doorAng),0.12), po=project(oc,cx,cy,dist,scale), gr=scale*0.3/dist*(0.4+doorOpen);
@@ -461,7 +528,7 @@
     if(opening){ openP+=(1-openP)*0.045+0.006; if(openP>0.985) openP=1; }
     var breathe = reduce?0.6:(0.35+0.35*Math.sin(te*0.6));
     var doorOpen = opening? openP*0.95 : breathe*0.25;
-    var doorAng = reduce?0.4: Math.sin(te*0.4)*0.5*(1-openP);
+    var doorAng = reduce?0.28: Math.sin(te*0.4)*0.28*(1-openP);
     ectx.setTransform(DPR,0,0,DPR,0,0);
     if(opening){var z=1+openP*openP*3.2; ectx.translate(EW/2,EH*0.5); ectx.scale(z,z); ectx.translate(-EW/2,-EH*0.5);}
     scene(ectx,EW,EH,te,true,doorOpen,doorAng);
@@ -503,3 +570,5 @@
   }
 })();
 </script>
+</body>
+</html>
